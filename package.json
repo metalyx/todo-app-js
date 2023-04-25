@@ -1,0 +1,20 @@
+{
+    "name": "ps-todo",
+    "description": "This is a classical Todo App that built for practicing OOP",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "devDependencies": {
+        "@web/dev-server": "^0.2.1"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "web-dev-server --open --node-resolve"
+    },
+    "keywords": [],
+    "author": "Vitalii Tereshchenko",
+    "license": "ISC",
+    "dependencies": {
+        "uuid": "^9.0.0"
+    }
+}
