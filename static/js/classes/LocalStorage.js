@@ -22,12 +22,46 @@ class LocalStorage {
     }
 
     insert(object) {
-        const data = this._getParsedFromLocalStorage();
+        let data = this._getParsedFromLocalStorage();
 
-        if (data) {
-            data.push(object);
+        // If there is data in local storage
+        if (data && data.length > 0) {
+            // If there is such item, we just change the fields of it
+            if (data.find((item) => item.id == object.id)) {
+                data = data.map((item) => {
+                    if (item.id != object.id) {
+                        return item;
+                    } else {
+                        const { id, text, isCompleted } = object;
 
-            window.localStorage.setItem(this.key, JSON.stringify(data));
+                        if (
+                            id === undefined ||
+                            (text === undefined && isCompleted === undefined)
+                        ) {
+                            throw new Error(
+                                'Unexpected object came in insert method of LocalStorage class'
+                            );
+                        } else {
+                            const editedItem = {
+                                id,
+                                text,
+                                isCompleted,
+                            };
+
+                            return editedItem;
+                        }
+                    }
+                });
+
+                window.localStorage.setItem(this.key, JSON.stringify(data));
+                // If no such object, just push as new one
+            } else {
+                window.localStorage.setItem(
+                    this.key,
+                    JSON.stringify([...data, object])
+                );
+            }
+            // If there is no data, set as array with one element - the object
         } else {
             window.localStorage.setItem(this.key, JSON.stringify([object]));
         }

@@ -12,6 +12,16 @@ li.todo-item {
 
     cursor: pointer;
     margin-bottom: 10px;
+
+    transition: background 400ms, transform 200ms;
+}
+
+li.todo-item:hover {
+    background: rgb(239, 239, 239);
+}
+li.todo-item:active {
+    background: rgb(201, 201, 201);
+    transform: scale(0.97);
 }
 
 li.todo-item label,
