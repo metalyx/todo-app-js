@@ -1,11 +1,7 @@
 class Form {
     inputText = '';
     form = null;
-    // `<form id="form-add-new-item">
-    // <label for="newItem">New item</label>
-    // <input id="newItem" type="text" />
-    // <button class="btn-secondary" type="button" id="addTaskButton">Add task</button>
-    // </form>`
+
     constructor() {
         const form = document.createElement('form');
         const label = document.createElement('label');

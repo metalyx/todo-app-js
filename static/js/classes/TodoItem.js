@@ -1,3 +1,5 @@
+import LocalStorage from './LocalStorage.js';
+
 class TodoItem {
     //
     static LAST_TODOITEM_ID_POSTFIX = 0;
@@ -31,46 +33,104 @@ class TodoItem {
     }
 
     constructor(text) {
-        TodoItem.LAST_TODOITEM_ID_POSTFIX += 1;
+        const LS = new LocalStorage('todoItems');
+        const localStorageData = LS.getAll();
 
-        this.id = TodoItem.LAST_TODOITEM_ID_POSTFIX;
-        this.text = '';
+        if (!localStorageData) {
+            TodoItem.LAST_TODOITEM_ID_POSTFIX += 1;
 
-        this.isCompleted = false;
+            this.id = TodoItem.LAST_TODOITEM_ID_POSTFIX;
+            this.text = '';
 
-        const li = this.createLi(this.id);
+            this.isCompleted = false;
 
-        const div = document.createElement('div');
-        div.className = 'flex';
+            const li = this.createLi(this.id);
 
-        const input = document.createElement('input');
-        input.id = `todo-input-${this.id}`;
-        input.setAttribute('type', 'checkbox');
+            const div = document.createElement('div');
+            div.className = 'flex';
 
-        this.input = input;
+            const input = document.createElement('input');
+            input.id = `todo-input-${this.id}`;
+            input.setAttribute('type', 'checkbox');
 
-        const label = document.createElement('label');
-        label.htmlFor = `todo-input-${this.id}`;
-        label.textContent = `${this.text}`;
+            this.input = input;
 
-        this.label = label;
+            const label = document.createElement('label');
+            label.htmlFor = `todo-input-${this.id}`;
+            label.textContent = `${this.text}`;
 
-        div.appendChild(input);
-        div.appendChild(label);
+            this.label = label;
 
-        const button = document.createElement('button');
-        button.id = `todo-deleteButton-${this.id}`;
-        button.textContent = 'Delete';
-        button.className = 'btn-danger';
+            div.appendChild(input);
+            div.appendChild(label);
 
-        button.addEventListener('click', this.removeItem);
+            const button = document.createElement('button');
+            button.id = `todo-deleteButton-${this.id}`;
+            button.textContent = 'Delete';
+            button.className = 'btn-danger';
 
-        this.button = button;
+            button.addEventListener('click', this.removeItem);
 
-        li.appendChild(div);
-        li.appendChild(button);
+            this.button = button;
 
-        this.setText(text);
+            li.appendChild(div);
+            li.appendChild(button);
+
+            this.setText(text);
+        } else if (Array.isArray(localStorageData)) {
+            let maxID = 0;
+
+            localStorageData.forEach((item) => {
+                const { id, text, isCompleted } = item;
+
+                if (maxID <= id) {
+                    maxID = id;
+                }
+
+                TodoItem.LAST_TODOITEM_ID_POSTFIX += 1;
+
+                this.id = TodoItem.LAST_TODOITEM_ID_POSTFIX;
+                this.text = '';
+
+                this.isCompleted = false;
+
+                const li = this.createLi(this.id);
+
+                const div = document.createElement('div');
+                div.className = 'flex';
+
+                const input = document.createElement('input');
+                input.id = `todo-input-${this.id}`;
+                input.setAttribute('type', 'checkbox');
+
+                this.input = input;
+
+                const label = document.createElement('label');
+                label.htmlFor = `todo-input-${this.id}`;
+                label.textContent = `${this.text}`;
+
+                this.label = label;
+
+                div.appendChild(input);
+                div.appendChild(label);
+
+                const button = document.createElement('button');
+                button.id = `todo-deleteButton-${this.id}`;
+                button.textContent = 'Delete';
+                button.className = 'btn-danger';
+
+                button.addEventListener('click', this.removeItem);
+
+                this.button = button;
+
+                li.appendChild(div);
+                li.appendChild(button);
+
+                this.setText(text);
+            });
+
+            console.log(localStorageData);
+        }
     }
 
     // In development...
@@ -94,6 +154,10 @@ class TodoItem {
     }
 
     getItem() {
+        if (!this.li) {
+            throw new Error('TodoItem was not defined');
+        }
+
         return this.li;
     }
 

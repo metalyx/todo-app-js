@@ -14,7 +14,7 @@ const addTaskButton = document.getElementById('addTaskButton');
 
 addTaskButton.addEventListener('click', () => {
     const newTask = new TodoItem(input.value).getItem();
-    ul?.appendChild(newTask);
+    ul.appendChild(newTask);
 
     input.value = '';
 });
