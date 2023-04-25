@@ -9,10 +9,10 @@ This is a classical Todo App that built for practicing OOP
 ✔️ You can mark task as completed <br />
 ✔️ You can delete task completely <br />
 ✔️ Tasks are stored in browser's local storage <br />
+✔️ Initial loading of tasks from local storage <br />
 
 ### FUNCTIONS BEING DEVELOPED
 
-🟡 Initial loading of tasks from local storage <br />
 🟡 UI enhancements <br />
 🟡 Creating boards <br />
 🟡 Assigning tasks to boards <br />
