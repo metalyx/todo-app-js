@@ -20,12 +20,17 @@
         <link rel="stylesheet" href="./static/css/todoItem.css" />
     </head>
     <body>
+        <select id="boardSelection">
+            <option value="defaultTable">defaultTable</option>
+        </select>
         <div id="formContainer"></div>
-        <div class="todo-container">
-            <h1>Tasks to do:</h1>
-            <ul id="defaultTable">
+        <div id="formBoardContainer"></div>
+        <h1>Tasks to do:</h1>
+        <div class="boardContainer">
 
-            </ul>
+            <!-- <ul id="defaultTable">
+                <h2>Default Table</h2>
+            </ul> -->
         </div>
 
         <script defer type="module" src="./static/js/index.js"></script>

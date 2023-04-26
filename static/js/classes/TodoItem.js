@@ -1,6 +1,12 @@
-'use strict';
 import LocalStorage from './LocalStorage.js';
 import { v4 as uuidv4 } from 'uuid';
+import {
+    dragOver,
+    dragEnd,
+    dragLeave,
+    onDrop,
+    dragStart,
+} from '../helpers/dragDrop.js';
 
 class TodoItem {
     // a unique identifier for each item
@@ -15,8 +21,32 @@ class TodoItem {
     label;
     button;
 
-    static getFromLocalStorage() {
-        const LS = new LocalStorage('todoItems');
+    constructor(props) {
+        const { id, text, isCompleted } = props;
+
+        if (!id) {
+            this.id = uuidv4();
+        } else {
+            this.id = id;
+        }
+
+        if (text === '' || !text) {
+            this.text = 'No task description provided';
+        } else {
+            this.text = text;
+        }
+
+        if (isCompleted === undefined) {
+            this.isCompleted = false;
+        } else {
+            this.isCompleted = isCompleted;
+        }
+
+        this._createItem();
+    }
+
+    static getFromLocalStorage(tableId = 'todoItems') {
+        const LS = new LocalStorage(tableId);
         const localStorageData = LS.getAll();
 
         if (Array.isArray(localStorageData)) {
@@ -37,6 +67,7 @@ class TodoItem {
         const li = document.createElement('li');
         li.className = 'todo-item';
         li.id = `todo-item-${id}`;
+        li.draggable = true;
 
         li.addEventListener('click', (e) => {
             if (e.target instanceof HTMLLIElement) {
@@ -45,6 +76,12 @@ class TodoItem {
         });
 
         this.li = li;
+
+        this.li.addEventListener('dragover', dragOver);
+        this.li.addEventListener('dragend', dragEnd);
+        this.li.addEventListener('dragleave', dragLeave);
+        this.li.addEventListener('drop', (e) => onDrop(e, this.li));
+        this.li.addEventListener('dragstart', (e) => dragStart(e));
 
         return li;
     }
@@ -84,30 +121,6 @@ class TodoItem {
         li.appendChild(button);
 
         this.setText(this.text);
-    }
-
-    constructor(props) {
-        const { id, text, isCompleted } = props;
-
-        if (!id) {
-            this.id = uuidv4();
-        } else {
-            this.id = id;
-        }
-
-        if (text === '' || !text) {
-            this.text = 'No task description provided';
-        } else {
-            this.text = text;
-        }
-
-        if (isCompleted === undefined) {
-            this.isCompleted = false;
-        } else {
-            this.isCompleted = isCompleted;
-        }
-
-        this._createItem();
     }
 
     getItem() {

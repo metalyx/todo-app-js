@@ -20,8 +20,10 @@ li.todo-item:hover {
     background: rgb(239, 239, 239);
 }
 li.todo-item:active {
-    background: rgb(201, 201, 201);
-    transform: scale(0.97);
+    /* background: rgb(201, 201, 201);
+    transform: scale(0.97); */
+
+    cursor: move;
 }
 
 li.todo-item label,
